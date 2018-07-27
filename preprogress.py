@@ -20,7 +20,7 @@ def generate_data(data_path, time_step):
 
 
 if __name__ == "__main__":
-    X, y = generate_data("F:\AnaWork\SH000001.csv", 30)
+    X, y, _, _= generate_data("F:/AnaWork/lstm_stock/data/SH000001_2_train.csv", 30)
     print(X[:3])
     print(y[:3])
-    print(X.dtype,y.dtype)
+    print(X.dtype, y.dtype)
