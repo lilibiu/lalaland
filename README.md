@@ -11,3 +11,7 @@
 27/07/2018 update  
 update 2 more models: single layer BiLSTM model and multi-layers BiLSTM model  
 the multi_bilstm model achieves the best effect in all 3 models(with same hyper-parameter setting)  
+  
+01/08/2018 update
+the earier version uses only close price to predict close price, in this version I increase input data to 4 dimentions, using [close, high, low, open] to predict future move of stock price.  
+with same train settings, this version achieves better effect than last one.
