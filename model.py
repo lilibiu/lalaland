@@ -10,8 +10,8 @@ def multilstm_model(x, y, is_training, batch_size, hidden_size=32, layer_num=2, 
     outputs, final_state = tf.nn.dynamic_rnn(cell, x, initial_state=init_state, dtype=tf.float32)
     output = outputs[:, -1, :]
 
-    w = tf.Variable(tf.random_normal([hidden_size, 1]))
-    b = tf.Variable(tf.constant(0.1, shape=[1, ]))
+    w = tf.Variable(tf.random_normal([hidden_size, 4]))
+    b = tf.Variable(tf.constant(0.1, shape=[4, ]))
     predictions = tf.matmul(output, w) + b
 
     if not is_training:
@@ -69,8 +69,8 @@ def multi_bilstm_model(x, y, is_training, batch_size, hidden_size=32, layer_num=
     output = tf.concat(outputs, 2)
     output = output[:, -1, :]
 
-    w = tf.Variable(tf.random_normal([2 * hidden_size, 1]))
-    b = tf.Variable(tf.constant(0.1, shape=[1, ]))
+    w = tf.Variable(tf.random_normal([2 * hidden_size, 4]))
+    b = tf.Variable(tf.constant([0.1], shape=[4, ]))
     predictions = tf.matmul(output, w) + b
 
     global_step = tf.Variable(0, trainable=False)

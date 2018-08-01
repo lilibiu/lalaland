@@ -1,3 +1,4 @@
+# -*- utf-8 -*-
 import tensorflow as tf
 import os
 from preprogress import generate_data
@@ -25,10 +26,13 @@ def main(_):
     num = (len(train_x) // FLAGS.batch_size) * FLAGS.batch_size
     train_x = train_x[:num]
     train_y = train_y[:num]
+    # print(np.shape(train_x), np.shape(train_y))
 
     ds = tf.contrib.data.Dataset.from_tensor_slices((train_x, train_y))
     ds = ds.shuffle(1000).batch(FLAGS.batch_size).repeat()
     x, y = ds.make_one_shot_iterator().get_next()
+    # print(x.get_shape(), y.get_shape())
+    # exit(0)
 
     with tf.variable_scope("model"):
         prediction, loss, train_op = multi_bilstm_model(x, y, is_training=True, batch_size=FLAGS.batch_size,

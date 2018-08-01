@@ -10,7 +10,7 @@ tf.app.flags.DEFINE_integer("hidden_size", 32, "hidden layer size")
 tf.app.flags.DEFINE_integer("layer_num", 2, "hidden layer num")
 
 tf.app.flags.DEFINE_integer("learning_rate", 0.1, "learning rate")
-tf.app.flags.DEFINE_integer("training_step", 10000, "training steps")
+tf.app.flags.DEFINE_integer("training_step", 1000, "training steps")
 
 tf.app.flags.DEFINE_string("model_path", os.path.abspath("./model"), "save model to this path")
 tf.app.flags.DEFINE_string("data_path", os.path.abspath("./data/SH000001_2_test.csv"), "test set path")
@@ -24,7 +24,7 @@ def main(_):
     x, y = ds.make_one_shot_iterator().get_next()
 
     with tf.variable_scope("model"):
-        prediction, _, _ = multi_bilstm_model(x, [0.0], False, batch_size=1, hidden_size=FLAGS.hidden_size,
+        prediction, _, _ = multi_bilstm_model(x, [0.0, 0.0, 0.0, 0.0], False, batch_size=1, hidden_size=FLAGS.hidden_size,
                                               layer_num=FLAGS.layer_num, start_lr=FLAGS.learning_rate)
 
     predictions = []
@@ -43,11 +43,7 @@ def main(_):
     predictions = np.array(predictions).squeeze()
     y_ = np.array(y_).squeeze()
     predictions_recover = (predictions * data_std) + data_mean
-    print(np.shape(predictions_recover))
-
     y_recover = (y_ * data_std) + data_mean
-    data = np.array((predictions_recover, y_recover))
-    print(np.shape(data))
 
     mse_n = np.average((predictions-y_)**2)
     mse = np.average((predictions_recover-y_recover)**2)
@@ -55,8 +51,8 @@ def main(_):
     print("mean square error is %f" % mse)
 
     plt.figure()
-    plt.plot(predictions_recover, label='prediction')
-    plt.plot(y_recover, label='real_data')
+    plt.plot(predictions_recover[:, 0], label='close prediction')
+    plt.plot(y_recover[:, 0], label='close real_data')
     plt.legend()
     plt.show()
 
